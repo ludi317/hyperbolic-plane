@@ -1,23 +1,23 @@
-# Four Models of the Hyperbolic Plane
+# Five Views of the Hyperbolic Plane
 
 An interactive p5.js visualization showing the **same point and the same
 geometry** rendered simultaneously in the four standard models of the
-hyperbolic plane **H²**:
+hyperbolic plane **H²**, plus a saddle surface in ordinary 3D:
 
 ```
-┌────────────────────┬─────────────────────┐
-│  Hyperboloid (3D)  │  Poincaré disk      │
-├────────────────────┼─────────────────────┤
-│  Klein disk        │  Poincaré half-plane│
-└────────────────────┴─────────────────────┘
+┌────────────────────┬─────────────────────┬─────────────────────┐
+│  Hyperboloid (3D)  │  Poincaré disk      │  Klein disk         │
+├────────────────────┼─────────────────────┼─────────────────────┤
+│ Poincaré half-plane│  Saddle (3D)        │  caption            │
+└────────────────────┴─────────────────────┴─────────────────────┘
 ```
 
 Move your cursor over **any** panel and one hyperbolic point (the red dot)
-traces across all four models at once. A grid of geodesics and a hyperbolic
+traces across all five views at once. A grid of geodesics and a hyperbolic
 circle around the point are drawn in every panel so you can watch how each
 model distorts the *same* objects differently.
 
-![Screenshot: the same hyperbolic point, geodesic grid, and circle shown in all four models](screenshot.png)
+![Screenshot: the same hyperbolic point, geodesic grid, and circle shown in all five views](screenshot.png)
 
 ## Running it
 
@@ -34,9 +34,10 @@ python3 -m http.server 8077
 
 | Element | Meaning |
 |---|---|
-| **Red dot** | The single hyperbolic point you control with the cursor (canonical state `P`). |
+| **Red dot** | The single hyperbolic point you control with the cursor (canonical state `P`). Drawn white on the hyperboloid. |
 | **Yellow circle** | A *hyperbolic* circle — every point on it is the same hyperbolic distance (`CIRCLE_RADIUS = 0.9`) from the red dot. |
-| **Colored grid** | A "Cartesian" grid of geodesics. Color is keyed by index, so a given geodesic is the **same color in all four panels**. |
+| **Colored grid** | A "Cartesian" grid of geodesics. Color is keyed by index, so a given geodesic is the **same color in every panel**. |
+| **White dashed circle** | The boundary of the patch of H² (geodesic disk of radius 1.7 about the origin) that the saddle panel can show. |
 
 The point of the side-by-side layout: it's all **one** 2D geometry. Each model
 is a different (necessarily distorting) map of it.
@@ -50,6 +51,11 @@ is a different (necessarily distorting) map of it.
   distort (the yellow circle becomes an ellipse).
 - **Poincaré half-plane** — also conformal; geodesics are semicircles
   perpendicular to the real axis.
+- **Saddle** — the hyperbolic paraboloid `z = (x² − y²)/2`, a real surface in
+  Euclidean 3D whose curvature is exactly −1 at its center (it decays away
+  from it — by Hilbert's theorem no smooth surface in 3D has curvature −1
+  everywhere, so only a patch of H² fits). Points land on it via the
+  exponential map at the origin.
 
 Watch a geodesic toward the disk edge: it bows away from center and approaches
 (but never touches) the boundary, because the boundary represents points
@@ -58,9 +64,11 @@ infinitely far away.
 ## Interaction
 
 - **Cursor in any panel** sets the point; it updates everywhere live.
-- The **hyperboloid panel** is interactive too: the 2D cursor is
-  inverse-projected onto the 3D surface (`inverseHyper`), picking the surface
-  nearest the camera.
+- The **3D panels** are interactive too: the 2D cursor is inverse-projected
+  onto the surface (`inverseHyper`, `inverseSaddle`), picking the sheet
+  nearest the camera — you always grab the point you can see.
+- **Drag the saddle** to spin it about its vertical axis (hover still steers
+  the point; dragging only rotates).
 
 ## How it works
 
@@ -72,6 +80,9 @@ upper sheet of the hyperboloid. Each panel is just a different projection of
 - **Klein disk** — central projection from the origin.
 - **Half-plane** — Cayley transform of the disk.
 - **Hyperboloid** — tilted orthographic view of the surface.
+- **Saddle** — geodesic polar coordinates `(ρ, θ)` about the origin, laid out
+  on the plane by the exponential map and lifted to `z = (x² − y²)/2`, with
+  depth-faded rendering (far side dimmer) so the sheet reads in 3D.
 
 The hyperbolic circle is built honestly in Minkowski space as
 `cosh(ρ)·P + sinh(ρ)·(cos θ·e₁ + sin θ·e₂)`, where `e₁, e₂` are
