@@ -55,7 +55,9 @@ is a different (necessarily distorting) map of it.
   Euclidean 3D whose curvature is exactly −1 at its center (it decays away
   from it — by Hilbert's theorem no smooth surface in 3D has curvature −1
   everywhere, so only a patch of H² fits). Points land on it via the
-  exponential map at the origin.
+  exponential map at the origin; the yellow circle shows up as a wavy
+  "Pringle-edge" loop, and when the point leaves the dashed patch a hollow
+  marker waits on the boundary in its direction.
 
 Watch a geodesic toward the disk edge: it bows away from center and approaches
 (but never touches) the boundary, because the boundary represents points
@@ -100,3 +102,7 @@ boundary-orthogonal arcs in the conformal models.
   arcs — smooth at this density.
 - Grid geodesics stop just shy of the boundary by design; their true endpoints
   are infinitely far away.
+- The saddle picture is faithful only near its center: the exponential map
+  preserves distance and direction from the origin, but a saddle with varying
+  curvature cannot carry H² isometrically, so distortion grows toward the
+  dashed edge. The four model panels are exact.
